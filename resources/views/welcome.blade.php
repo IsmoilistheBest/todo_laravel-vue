@@ -92,7 +92,7 @@
                 @auth
                     <h1 class="text-monospace text-danger">Hi, {{ auth()->user()->name }}</h1>
                     <div class="text-monospace text-primary font-weight-bold">
-                        <a class="text-secondary" href="#">
+                        <a class="text-secondary" href="/todos">
                             Go to your Todo
                         </a>
                     </div>

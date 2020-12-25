@@ -2007,20 +2007,28 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var data = new FormData();
+      var answer;
       data.append('_method', 'DELETE');
       console.log(e);
-      axios.post('/api/todo/' + e.id, data).then(function (res) {
-        _this.todos = res.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      answer = confirm("Are you sure for deleting " + e.title);
+      console.log(answer);
+
+      if (answer == true) {
+        axios.post('/api/todo/' + e.id, data).then(function (res) {
+          _this.todos = res.data;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
     },
     updateTodo: function updateTodo(e) {
       this.edit = false;
+      e.completed = +e.completed;
+      console.log(e.completed);
       var data = new FormData();
       data.append('_method', 'PATCH');
       data.append('title', e.title);
-      data.append('completed', 0);
+      data.append('completed', e.completed);
       axios.post('/api/todo/' + e.id, data)["catch"](function (error) {
         console.log(error);
       });
@@ -2049,6 +2057,7 @@ __webpack_require__.r(__webpack_exports__);
       if (e.completed == false) {
         console.log(e.completed);
         data.append('completed', 0);
+        data.append('title', e.title);
         axios.post('/api/todo/' + e.id, data);
       }
     },
@@ -2056,6 +2065,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var data = new FormData();
+      console.log(this.todos.length);
       data.append('title', this.form.title);
       axios.post('/api/todo', data).then(function () {
         console.log('Stored in database');
@@ -50492,15 +50502,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!***************************************************!*\
   !*** ./resources/js/components/TodoComponent.vue ***!
   \***************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TodoComponent_vue_vue_type_template_id_2bd14908___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TodoComponent.vue?vue&type=template&id=2bd14908& */ "./resources/js/components/TodoComponent.vue?vue&type=template&id=2bd14908&");
 /* harmony import */ var _TodoComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TodoComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/TodoComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _TodoComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _TodoComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -50530,7 +50539,7 @@ component.options.__file = "resources/js/components/TodoComponent.vue"
 /*!****************************************************************************!*\
   !*** ./resources/js/components/TodoComponent.vue?vue&type=script&lang=js& ***!
   \****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

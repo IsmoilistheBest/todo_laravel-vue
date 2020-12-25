@@ -97,20 +97,27 @@
         methods: {
             deleteTodo(e){
                 let data = new FormData;
+                let answer;
                 data.append('_method', 'DELETE');
                 console.log(e);
-                axios.post('/api/todo/' + e.id, data).then((res) =>{
-                    this.todos = res.data
-                }).catch((error) => {
-                    console.log(error);
-                })
+                answer = confirm("Are you sure for deleting " + e.title);
+                console.log(answer);
+                if (answer == true){
+                    axios.post('/api/todo/' + e.id, data).then((res) =>{
+                        this.todos = res.data;
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+                }
             },
             updateTodo(e){
                 this.edit = false;
+                e.completed = +e.completed;
+                console.log(e.completed);
                 let data = new FormData();
                 data.append('_method', 'PATCH');
                 data.append('title', e.title);
-                data.append('completed', 0);
+                data.append('completed', e.completed);
                 axios.post('/api/todo/' + e.id, data)
                 .catch((error) => {
                     console.log(error);
@@ -136,12 +143,14 @@
                 if(e.completed == false){
                     console.log(e.completed);
                     data.append('completed', 0);
+                    data.append('title', e.title);
                     axios.post('/api/todo/' + e.id, data)
                 }
 
             },
             saveTodo(){
                 let data = new FormData();
+                console.log(this.todos.length);
                 data.append('title', this.form.title);
                 axios.post('/api/todo', data)
                 .then( () => {
