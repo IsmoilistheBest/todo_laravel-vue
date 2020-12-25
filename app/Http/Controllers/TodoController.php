@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Todo;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
@@ -40,9 +41,20 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $todo = new Todo();
-        $todo->user_id = auth()->user()->id;
-        $todo->title = $request->title;
-        $todo->save();
+        $check = Todo::where('title', $request->title)->first();
+        // dd($check);
+        if ($check->title == $request->title)
+        {
+            // dd($check->title);
+            $error = false;
+            return $error->with('error', 'error');
+        }
+        else
+        {
+            $todo->user_id = auth()->user()->id;
+            $todo->title = $request->title;
+            $todo->save();
+        }
     }
 
     /**

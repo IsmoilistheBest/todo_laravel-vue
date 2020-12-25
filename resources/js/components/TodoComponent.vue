@@ -9,6 +9,10 @@
                     <button class="btn btn-success" type="submit" id="button-addon2">Add</button>
                 </div>
             </div>
+             <!-- <span class="text-danger pt-3 pb-3" style="font-size:20px;"
+                v-if="form.errors.has('error')" v-text="form.errors.get('error')"
+             >
+             </span> -->
         </form>
         <div class="w-100 todo">
 
@@ -161,6 +165,7 @@
                 })
                 .catch( error => {
                     console.log(error);
+                    alert('Hey dude you have another uncompleted task like this one');
                 });
             }
         },
