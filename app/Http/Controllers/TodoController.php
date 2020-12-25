@@ -41,19 +41,26 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $todo = new Todo();
-        $check = Todo::where('title', $request->title)->first();
-        // dd($check);
-        if ($check->title == $request->title)
-        {
-            // dd($check->title);
-            $error = false;
-            return $error->with('error', 'error');
-        }
-        else
+        $check_id = auth()->user()->id;
+        $this->validate($request, [
+            'title' => 'required|max:255'
+        ]);
+        $check = Todo::where('title', $request->title)
+                        ->where('user_id', $check_id)
+                        ->count();
+
+        if (!$check)
         {
             $todo->user_id = auth()->user()->id;
             $todo->title = $request->title;
             $todo->save();
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'msg'   => 'Hey dude you have another uncompleted task like this one'
+            ]);
         }
     }
 

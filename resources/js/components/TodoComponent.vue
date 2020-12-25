@@ -92,6 +92,7 @@
             return {
                 todos: '',
                 edit: false,
+                status: '',
                 form: new Form({
                     title: '',
 
@@ -157,15 +158,23 @@
                 console.log(this.todos.length);
                 data.append('title', this.form.title);
                 axios.post('/api/todo', data)
-                .then( () => {
+                .then( (response) => {
                     console.log('Stored in database');
+                    this.status = response.data.msg;
+                    console.log(this.status);
+                    if (response.data.status == 'error'){
+                        alert(this.status);
+                    }
                     this.form.reset();
                     this.getTodos();
                     // location.reload();
                 })
                 .catch( error => {
-                    console.log(error);
-                    alert('Hey dude you have another uncompleted task like this one');
+                    // console.log(error);
+                    console.log("ERROR\n");
+                    let status = error.response.data.msg;
+                    console.log(status);
+                    // this.displayNotificationError(err);
                 });
             }
         },

@@ -2001,6 +2001,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       todos: '',
       edit: false,
+      status: '',
       form: new Form({
         title: ''
       })
@@ -2071,16 +2072,24 @@ __webpack_require__.r(__webpack_exports__);
       var data = new FormData();
       console.log(this.todos.length);
       data.append('title', this.form.title);
-      axios.post('/api/todo', data).then(function () {
+      axios.post('/api/todo', data).then(function (response) {
         console.log('Stored in database');
+        _this3.status = response.data.msg;
+        console.log(_this3.status);
+
+        if (response.data.status == 'error') {
+          alert(_this3.status);
+        }
 
         _this3.form.reset();
 
         _this3.getTodos(); // location.reload();
 
       })["catch"](function (error) {
-        console.log(error);
-        alert('Hey dude you have another uncompleted task like this one');
+        // console.log(error);
+        console.log("ERROR\n");
+        var status = error.response.data.msg;
+        console.log(status); // this.displayNotificationError(err);
       });
     }
   },
