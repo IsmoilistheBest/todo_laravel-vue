@@ -10914,3 +10914,60 @@ a.text-dark:focus {
   cursor: pointer;
 }
 
+.text-del {
+  text-decoration: line-through;
+}
+
+.overtext {
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: break-wrap;
+  overflow: hidden;
+}
+
+.overtext:hover {
+  display: inline-block;
+  overflow: auto;
+}
+
+.svg-circleplus {
+  height: 30px;
+  stroke: green;
+}
+
+.svg-custom {
+  margin-right: 10px;
+}
+
+.textarea-custom {
+  width: 100%;
+  height: auto;
+}
+
+.modal-description {
+  font-size: 15px;
+  font-family: "Nunito";
+  color: #6574cd;
+  font-style: italic;
+}
+
+.modal-description__text {
+  font-style: normal;
+  color: black;
+  font-size: 20px;
+  font-family: "Nunito";
+}
+
+.modal-title {
+  font-size: 20px;
+  color: #e3342f;
+  font-family: "Nunito";
+}
+
+.modal-title__text {
+  font-size: 22px;
+  color: #9561e2;
+}
+

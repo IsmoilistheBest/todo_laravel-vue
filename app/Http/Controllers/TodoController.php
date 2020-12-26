@@ -47,6 +47,7 @@ class TodoController extends Controller
         ]);
         $check = Todo::where('title', $request->title)
                         ->where('user_id', $check_id)
+                        ->where('completed', 0)
                         ->count();
 
         if (!$check)
@@ -96,11 +97,76 @@ class TodoController extends Controller
     public function update(Request $request, $id)
     {
         $todo = Todo::findOrFail($id);
+        // dd($request->description);
+        if($request->description)
+        {
+            $todo->description = $request->description;
+            $todo->save();
+        }
+        if($request->completed || $request->completed)
+        {
+            $todo->completed = $request->completed;
+            $todo->save();
+        }
+        if($request->title)
+        {
+            $this->validate($request, [
+                'title' => 'required|max:255'
+            ]);
+            $check_id = auth()->user()->id;
+            $check = Todo::where('title', $request->title)
+                                ->where('user_id', $check_id)
+                                ->where('completed', 0)
+                                ->count();
 
-        $todo->completed = $request->completed;
-        $todo->title = $request->title;
-        // dd($todo);
-        $todo->save();
+            if(!$check)
+            {
+                $todo->title = $request->title;
+                $todo->save();
+            }
+            else
+            {
+                return response()->json([
+                    'status' => 'error',
+                    'msg'   => 'Hey dude you have another uncompleted task like this one'
+                ]);
+            }
+
+        }
+        // $todo->title = $request->title;
+        // $todo->completed = $request->completed;
+        // if($todo->completed->isEmpty())
+        // {
+        //     dd($request->all());
+        // }
+        // else
+        // {
+        //     dd($request->all());
+        // }
+        // $check_id = auth()->user()->id;
+        // $this->validate($request, [
+        //     'title' => 'required|max:255'
+        // ]);
+        // $check = Todo::where('title', $request->title)
+        //                 ->where('user_id', $check_id)
+        //                 ->count();
+
+        // if(!$check)
+        // {
+        //     $todo->completed = $request->completed;
+        //     $todo->title = $request->title;
+        //     // dd($todo);
+        //     $todo->save();
+        // }
+        // else
+        // {
+        //     // $todo->completed = $request->completed;
+        //     // $todo->save();
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'msg'   => 'Hey dude you have another uncompleted task like this one'
+        //     ]);
+        // }
     }
 
     /**
