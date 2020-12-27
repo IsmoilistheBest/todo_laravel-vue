@@ -45,32 +45,39 @@
                     >
                         {{ todo.title }}
                         <!-- Modal for description -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">{{ todo.title }}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="description_id == todo.id"
+                        >
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{ todo.title }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <textarea  v-model="form.description"  class="textarea-custom"
+                                            v-if="!todo.description" placeholder="Enter description here..." type="text"
+                                        >
+                                        </textarea>
+                                        <textarea  v-model="todo.description"  class="textarea-custom"
+                                            v-if="todo.description" placeholder="Enter description here..." type="text"
+                                        >
+                                        </textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" data-dismiss="modal" @click="addDescription(todo)" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <textarea v-model="form.description"  class="textarea-custom" placeholder="Enter description here..." type="text">
-
-                                </textarea>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" @click="addDescription(todo)" class="btn btn-primary">Save</button>
-                            </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                     <!-- end of modal -->
                     <!-- Modal for show-->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true" v-if="show_id == todo.id"
                     >
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -101,9 +108,10 @@
 
                     <span>
                         <svg class="svg-custom" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                            aria-hidden="true" focusable="false" width="1.4em" height="1em" style="-ms-transform: rotate(360deg);
-                            -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet"
-                            viewBox="0 0 1792 1280" data-toggle="modal" data-target="#exampleModalCenter"
+                            aria-hidden="true" focusable="false" width="1.4em" height="1em"
+                            style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                            preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1280" data-toggle="modal"
+                            data-target="#exampleModalCenter" v-on:click="show_id = todo.id"
                         >
                         <path d="M1664 704q-152-236-381-353q61 104 61 225q0 185-131.5 316.5T896 1024T579.5 892.5T448 576q0-121
                             61-225q-229 117-381 353q133 205 333.5 326.5T896 1152t434.5-121.5T1664 704zM944 320q0-20-14-34t-34-14q-125
@@ -112,7 +120,7 @@
                             139T1772 635q20 35 20 69z" fill="#626262"/>
                         </svg>
                         <svg alt="Add description" data-toggle="modal" data-target="#exampleModal"
-                            class="svg-circleplus" viewBox="0 0 100 100"
+                            class="svg-circleplus" viewBox="0 0 100 100" v-on:click="description_id = todo.id"
                         >
                         <circle cx="50" cy="50" r="45" fill="none" stroke-width="7.5"></circle>
                         <line x1="32.5" y1="50" x2="67.5" y2="50" stroke-width="5"></line>
@@ -166,6 +174,8 @@
                 todos: '',
                 edit: false,
                 status: '',
+                show_id: false,
+                description_id: false,
                 form: new Form({
                     title: '',
                     description: ''
@@ -196,6 +206,9 @@
                 data.append('description', this.form.description);
                 console.log(data);
                 axios.post('/api/todo/' + e.id, data)
+                .then( res => {
+                    this.getTodos();
+                })
 
             },
             updateTodo(e){

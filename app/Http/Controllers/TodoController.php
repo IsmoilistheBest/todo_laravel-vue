@@ -43,7 +43,7 @@ class TodoController extends Controller
         $todo = new Todo();
         $check_id = auth()->user()->id;
         $this->validate($request, [
-            'title' => 'required|max:255'
+            'title' => 'required|max:255|min:3'
         ]);
         $check = Todo::where('title', $request->title)
                         ->where('user_id', $check_id)
@@ -111,7 +111,7 @@ class TodoController extends Controller
         if($request->title)
         {
             $this->validate($request, [
-                'title' => 'required|max:255'
+                'title' => 'required|max:255|min:3'
             ]);
             $check_id = auth()->user()->id;
             $check = Todo::where('title', $request->title)

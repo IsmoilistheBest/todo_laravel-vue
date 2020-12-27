@@ -2069,12 +2069,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       todos: '',
       edit: false,
       status: '',
+      show_id: false,
+      description_id: false,
       form: new Form({
         title: '',
         description: ''
@@ -2101,15 +2111,19 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     addDescription: function addDescription(e) {
+      var _this2 = this;
+
       console.log(e);
       var data = new FormData();
       data.append('_method', 'PATCH');
       data.append('description', this.form.description);
       console.log(data);
-      axios.post('/api/todo/' + e.id, data);
+      axios.post('/api/todo/' + e.id, data).then(function (res) {
+        _this2.getTodos();
+      });
     },
     updateTodo: function updateTodo(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.edit = false; // e.completed = +e.completed;
       // console.log(e.completed);
@@ -2119,21 +2133,21 @@ __webpack_require__.r(__webpack_exports__);
       data.append('title', e.title); // data.append('completed', e.completed);
 
       axios.post('/api/todo/' + e.id, data).then(function (response) {
-        _this2.status = response.data.msg;
-        console.log(_this2.status);
+        _this3.status = response.data.msg;
+        console.log(_this3.status);
 
         if (response.data.status == 'error') {
-          alert(_this2.status);
+          alert(_this3.status);
         }
       })["catch"](function (error) {
         console.log(error);
       });
     },
     getTodos: function getTodos() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get('/api/todo').then(function (res) {
-        _this3.todos = res.data;
+        _this4.todos = res.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2158,23 +2172,23 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     saveTodo: function saveTodo() {
-      var _this4 = this;
+      var _this5 = this;
 
       var data = new FormData();
       console.log(this.todos.length);
       data.append('title', this.form.title);
       axios.post('/api/todo', data).then(function (response) {
         console.log('Stored in database');
-        _this4.status = response.data.msg;
-        console.log(_this4.status);
+        _this5.status = response.data.msg;
+        console.log(_this5.status);
 
         if (response.data.status == 'error') {
-          alert(_this4.status);
+          alert(_this5.status);
         }
 
-        _this4.form.reset();
+        _this5.form.reset();
 
-        _this4.getTodos(); // location.reload();
+        _this5.getTodos(); // location.reload();
 
       })["catch"](function (error) {
         // console.log(error);
@@ -38517,159 +38531,205 @@ var render = function() {
                           "\n                    "
                       ),
                       _vm._v(" "),
+                      _vm.description_id == todo.id
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "modal fade",
+                              attrs: {
+                                id: "exampleModal",
+                                tabindex: "-1",
+                                role: "dialog",
+                                "aria-labelledby": "exampleModalLabel",
+                                "aria-hidden": "true"
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "modal-dialog",
+                                  attrs: { role: "document" }
+                                },
+                                [
+                                  _c("div", { staticClass: "modal-content" }, [
+                                    _c("div", { staticClass: "modal-header" }, [
+                                      _c(
+                                        "h5",
+                                        {
+                                          staticClass: "modal-title",
+                                          attrs: { id: "exampleModalLabel" }
+                                        },
+                                        [_vm._v(_vm._s(todo.title))]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._m(1, true)
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "modal-body" }, [
+                                      !todo.description
+                                        ? _c("textarea", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form.description,
+                                                expression: "form.description"
+                                              }
+                                            ],
+                                            staticClass: "textarea-custom",
+                                            attrs: {
+                                              placeholder:
+                                                "Enter description here...",
+                                              type: "text"
+                                            },
+                                            domProps: {
+                                              value: _vm.form.description
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  "description",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      todo.description
+                                        ? _c("textarea", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: todo.description,
+                                                expression: "todo.description"
+                                              }
+                                            ],
+                                            staticClass: "textarea-custom",
+                                            attrs: {
+                                              placeholder:
+                                                "Enter description here...",
+                                              type: "text"
+                                            },
+                                            domProps: {
+                                              value: todo.description
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  todo,
+                                                  "description",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        : _vm._e()
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "modal-footer" }, [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn btn-secondary",
+                                          attrs: {
+                                            type: "button",
+                                            "data-dismiss": "modal"
+                                          }
+                                        },
+                                        [_vm._v("Close")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn btn-primary",
+                                          attrs: {
+                                            type: "button",
+                                            "data-dismiss": "modal"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.addDescription(todo)
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Save")]
+                                      )
+                                    ])
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.show_id == todo.id
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "modal fade",
+                      attrs: {
+                        id: "exampleModalCenter",
+                        tabindex: "-1",
+                        role: "dialog",
+                        "aria-labelledby": "exampleModalCenterTitle",
+                        "aria-hidden": "true"
+                      }
+                    },
+                    [
                       _c(
                         "div",
                         {
-                          staticClass: "modal fade",
-                          attrs: {
-                            id: "exampleModal",
-                            tabindex: "-1",
-                            role: "dialog",
-                            "aria-labelledby": "exampleModalLabel",
-                            "aria-hidden": "true"
-                          }
+                          staticClass: "modal-dialog modal-dialog-centered",
+                          attrs: { role: "document" }
                         },
                         [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "modal-dialog",
-                              attrs: { role: "document" }
-                            },
-                            [
-                              _c("div", { staticClass: "modal-content" }, [
-                                _c("div", { staticClass: "modal-header" }, [
-                                  _c(
-                                    "h5",
-                                    {
-                                      staticClass: "modal-title",
-                                      attrs: { id: "exampleModalLabel" }
-                                    },
-                                    [_vm._v(_vm._s(todo.title))]
-                                  ),
-                                  _vm._v(" "),
-                                  _vm._m(1, true)
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "modal-body" }, [
-                                  _c("textarea", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.form.description,
-                                        expression: "form.description"
-                                      }
-                                    ],
-                                    staticClass: "textarea-custom",
-                                    attrs: {
-                                      placeholder: "Enter description here...",
-                                      type: "text"
-                                    },
-                                    domProps: { value: _vm.form.description },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.form,
-                                          "description",
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "modal-footer" }, [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-secondary",
-                                      attrs: {
-                                        type: "button",
-                                        "data-dismiss": "modal"
-                                      }
-                                    },
-                                    [_vm._v("Close")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-primary",
-                                      attrs: { type: "button" },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.addDescription(todo)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Save")]
-                                  )
-                                ])
+                          _c("div", { staticClass: "modal-content" }, [
+                            _vm._m(2, true),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "modal-body" }, [
+                              _c("div", { staticClass: "modal-title__text" }, [
+                                _vm._v(_vm._s(todo.title))
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "modal-description" }, [
+                                _c(
+                                  "span",
+                                  { staticClass: "modal-description__text" },
+                                  [
+                                    _vm._v(
+                                      "\n                                Description:\n                            "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(todo.description) +
+                                    "\n                        "
+                                )
                               ])
-                            ]
-                          )
+                            ]),
+                            _vm._v(" "),
+                            _vm._m(3, true)
+                          ])
                         ]
                       )
                     ]
                   )
                 : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "modal fade",
-                  attrs: {
-                    id: "exampleModalCenter",
-                    tabindex: "-1",
-                    role: "dialog",
-                    "aria-labelledby": "exampleModalCenterTitle",
-                    "aria-hidden": "true"
-                  }
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "modal-dialog modal-dialog-centered",
-                      attrs: { role: "document" }
-                    },
-                    [
-                      _c("div", { staticClass: "modal-content" }, [
-                        _vm._m(2, true),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "modal-body" }, [
-                          _c("div", { staticClass: "modal-title__text" }, [
-                            _vm._v(_vm._s(todo.title))
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "modal-description" }, [
-                            _c(
-                              "span",
-                              { staticClass: "modal-description__text" },
-                              [
-                                _vm._v(
-                                  "\n                                Description:\n                            "
-                                )
-                              ]
-                            ),
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(todo.description) +
-                                "\n                        "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _vm._m(3, true)
-                      ])
-                    ]
-                  )
-                ]
-              ),
               _vm._v(" "),
               _vm.edit == todo.id
                 ? _c("input", {
@@ -38720,6 +38780,11 @@ var render = function() {
                         viewBox: "0 0 1792 1280",
                         "data-toggle": "modal",
                         "data-target": "#exampleModalCenter"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.show_id = todo.id
+                        }
                       }
                     },
                     [
@@ -38742,6 +38807,11 @@ var render = function() {
                         "data-toggle": "modal",
                         "data-target": "#exampleModal",
                         viewBox: "0 0 100 100"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.description_id = todo.id
+                        }
                       }
                     },
                     [
@@ -51584,8 +51654,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/rc/php_projects/todo_laravel+vue/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/rc/php_projects/todo_laravel+vue/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/rc47/php_projects/todo_laravel-vue/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/rc47/php_projects/todo_laravel-vue/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
