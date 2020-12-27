@@ -100,6 +100,10 @@ class TodoController extends Controller
         // dd($request->description);
         if($request->description)
         {
+            $this->validate($request, [
+                'description' => 'required|min:3'
+            ]);
+
             $todo->description = $request->description;
             $todo->save();
         }

@@ -2120,6 +2120,9 @@ __webpack_require__.r(__webpack_exports__);
       console.log(data);
       axios.post('/api/todo/' + e.id, data).then(function (res) {
         _this2.getTodos();
+      })["catch"](function (error) {
+        var err = error.response.data.errors.description[0];
+        alert(err);
       });
     },
     updateTodo: function updateTodo(e) {

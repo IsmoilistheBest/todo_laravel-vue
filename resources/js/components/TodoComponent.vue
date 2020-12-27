@@ -209,6 +209,10 @@
                 .then( res => {
                     this.getTodos();
                 })
+                .catch( error => {
+                    let err = error.response.data.errors.description[0];
+                    alert(err);
+                })
 
             },
             updateTodo(e){
