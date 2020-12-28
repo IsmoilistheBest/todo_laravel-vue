@@ -117,6 +117,11 @@ class TodoController extends Controller
             $this->validate($request, [
                 'title' => 'required|max:255|min:3'
             ]);
+
+            if($todo->title == $request->title)
+            {
+                return true;
+            }
             $check_id = auth()->user()->id;
             $check = Todo::where('title', $request->title)
                                 ->where('user_id', $check_id)
