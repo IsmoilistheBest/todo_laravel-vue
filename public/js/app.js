@@ -2077,6 +2077,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2123,6 +2133,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         var err = error.response.data.errors.description[0];
         alert(err);
+        location.reload();
       });
     },
     updateTodo: function updateTodo(e) {
@@ -2141,6 +2152,7 @@ __webpack_require__.r(__webpack_exports__);
 
         if (response.data.status == 'error') {
           alert(_this3.status);
+          location.reload();
         }
       })["catch"](function (error) {
         console.log(error);
@@ -38570,73 +38582,35 @@ var render = function() {
                                     ]),
                                     _vm._v(" "),
                                     _c("div", { staticClass: "modal-body" }, [
-                                      !todo.description
-                                        ? _c("textarea", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.form.description,
-                                                expression: "form.description"
-                                              }
-                                            ],
-                                            staticClass: "textarea-custom",
-                                            attrs: {
-                                              placeholder:
-                                                "Enter description here...",
-                                              type: "text"
-                                            },
-                                            domProps: {
-                                              value: _vm.form.description
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.form,
-                                                  "description",
-                                                  $event.target.value
-                                                )
-                                              }
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: todo.description,
+                                            expression: "todo.description"
+                                          }
+                                        ],
+                                        staticClass: "textarea-custom",
+                                        attrs: {
+                                          placeholder:
+                                            "Enter description here...",
+                                          type: "text"
+                                        },
+                                        domProps: { value: todo.description },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
                                             }
-                                          })
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      todo.description
-                                        ? _c("textarea", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: todo.description,
-                                                expression: "todo.description"
-                                              }
-                                            ],
-                                            staticClass: "textarea-custom",
-                                            attrs: {
-                                              placeholder:
-                                                "Enter description here...",
-                                              type: "text"
-                                            },
-                                            domProps: {
-                                              value: todo.description
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  todo,
-                                                  "description",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        : _vm._e()
+                                            _vm.$set(
+                                              todo,
+                                              "description",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
                                     ]),
                                     _vm._v(" "),
                                     _c("div", { staticClass: "modal-footer" }, [
@@ -38662,11 +38636,17 @@ var render = function() {
                                           },
                                           on: {
                                             click: function($event) {
-                                              return _vm.addDescription(todo)
+                                              _vm.form.description =
+                                                todo.description
+                                              _vm.addDescription(todo)
                                             }
                                           }
                                         },
-                                        [_vm._v("Save")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        Save\n                                    "
+                                          )
+                                        ]
                                       )
                                     ])
                                   ])
@@ -38718,10 +38698,19 @@ var render = function() {
                                     )
                                   ]
                                 ),
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(todo.description) +
-                                    "\n                        "
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass: "modal-description__body__text"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(todo.description) +
+                                        "\n                            "
+                                    )
+                                  ]
                                 )
                               ])
                             ]),

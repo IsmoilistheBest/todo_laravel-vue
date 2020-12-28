@@ -53,6 +53,9 @@
         font-size: 20px;
         font-family: 'Nunito';
     }
+    &__body__text {
+        overflow: auto;
+    }
 }
 .modal-title{
     font-size: 20px;
@@ -61,5 +64,7 @@
     &__text{
         font-size: 22px;
         color: $purple;
+        overflow: auto;
     }
+
 }

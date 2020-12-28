@@ -57,18 +57,26 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <textarea  v-model="form.description"  class="textarea-custom"
+                                        <!-- <textarea  v-model="form.description"  class="textarea-custom"
                                             v-if="!todo.description" placeholder="Enter description here..." type="text"
                                         >
                                         </textarea>
                                         <textarea  v-model="todo.description"  class="textarea-custom"
                                             v-if="todo.description" placeholder="Enter description here..." type="text"
                                         >
+                                        </textarea> -->
+                                        <textarea v-model="todo.description" class="textarea-custom"
+                                            placeholder="Enter description here..." type="text"
+                                        >
                                         </textarea>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" data-dismiss="modal" @click="addDescription(todo)" class="btn btn-primary">Save</button>
+                                        <button type="button" data-dismiss="modal" @click="form.description = todo.description;
+                                            addDescription(todo);" class="btn btn-primary"
+                                        >
+                                            Save
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +101,9 @@
                                 <span class="modal-description__text">
                                     Description:
                                 </span>
-                                {{ todo.description }}
+                                <p class="modal-description__body__text">
+                                    {{ todo.description }}
+                                </p>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -212,6 +222,7 @@
                 .catch( error => {
                     let err = error.response.data.errors.description[0];
                     alert(err);
+                    location.reload();
                 })
 
             },
@@ -229,6 +240,7 @@
                     console.log(this.status);
                     if (response.data.status == 'error'){
                         alert(this.status);
+                        location.reload();
                     }
                 })
                 .catch((error) => {

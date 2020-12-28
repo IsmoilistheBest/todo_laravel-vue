@@ -10960,6 +10960,10 @@ a.text-dark:focus {
   font-family: "Nunito";
 }
 
+.modal-description__body__text {
+  overflow: auto;
+}
+
 .modal-title {
   font-size: 20px;
   color: #e3342f;
@@ -10969,5 +10973,6 @@ a.text-dark:focus {
 .modal-title__text {
   font-size: 22px;
   color: #9561e2;
+  overflow: auto;
 }
 
