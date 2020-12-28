@@ -2124,17 +2124,25 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       console.log(e);
+      console.log(e.description);
       var data = new FormData();
-      data.append('_method', 'PATCH');
-      data.append('description', this.form.description);
-      console.log(data);
-      axios.post('/api/todo/' + e.id, data).then(function (res) {
-        _this2.getTodos();
-      })["catch"](function (error) {
-        var err = error.response.data.errors.description[0];
-        alert(err);
-        location.reload();
-      });
+
+      if (e.description == null) {
+        alert("The description must be at least 3 characters");
+        console.log("ERROR");
+      } else {
+        console.log('continue');
+        data.append('_method', 'PATCH');
+        data.append('description', e.description);
+        console.log(data);
+        axios.post('/api/todo/' + e.id, data).then(function (res) {
+          _this2.getTodos();
+        })["catch"](function (error) {
+          var err = error.response.data.errors.description[0];
+          alert(err);
+          location.reload();
+        });
+      }
     },
     updateTodo: function updateTodo(e) {
       var _this3 = this;
@@ -2194,22 +2202,15 @@ __webpack_require__.r(__webpack_exports__);
       data.append('title', this.form.title);
       axios.post('/api/todo', data).then(function (response) {
         console.log('Stored in database');
-        _this5.status = response.data.msg;
-        console.log(_this5.status);
-
-        if (response.data.status == 'error') {
-          alert(_this5.status);
-        }
 
         _this5.form.reset();
 
         _this5.getTodos(); // location.reload();
 
       })["catch"](function (error) {
-        // console.log(error);
-        console.log("ERROR\n");
-        var status = error.response.data.msg;
-        console.log(status); // this.displayNotificationError(err);
+        console.log("ERROR");
+        var err = error.response.data.errors.title[0];
+        alert(err);
       });
     }
   },
@@ -38572,7 +38573,8 @@ var render = function() {
                                       _c(
                                         "h5",
                                         {
-                                          staticClass: "modal-title",
+                                          staticClass:
+                                            "modal-title overtext__title",
                                           attrs: { id: "exampleModalLabel" }
                                         },
                                         [_vm._v(_vm._s(todo.title))]
@@ -38636,9 +38638,7 @@ var render = function() {
                                           },
                                           on: {
                                             click: function($event) {
-                                              _vm.form.description =
-                                                todo.description
-                                              _vm.addDescription(todo)
+                                              return _vm.addDescription(todo)
                                             }
                                           }
                                         },

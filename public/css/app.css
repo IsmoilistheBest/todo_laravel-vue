@@ -10927,6 +10927,15 @@ a.text-dark:focus {
   overflow: hidden;
 }
 
+.overtext__title {
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: break-wrap;
+  overflow: hidden;
+}
+
 .overtext:hover {
   display: inline-block;
   overflow: auto;

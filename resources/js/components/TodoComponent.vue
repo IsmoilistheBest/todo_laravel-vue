@@ -51,7 +51,7 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">{{ todo.title }}</h5>
+                                        <h5 class="modal-title overtext__title" id="exampleModalLabel">{{ todo.title }}</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
@@ -72,8 +72,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" data-dismiss="modal" @click="form.description = todo.description;
-                                            addDescription(todo);" class="btn btn-primary"
+                                        <button type="button" data-dismiss="modal" @click="addDescription(todo);"
+                                            class="btn btn-primary"
                                         >
                                             Save
                                         </button>
@@ -211,20 +211,29 @@
             },
             addDescription(e){
                 console.log(e);
+                console.log(e.description)
                 let data = new FormData;
-                data.append('_method', 'PATCH');
-                data.append('description', this.form.description);
-                console.log(data);
-                axios.post('/api/todo/' + e.id, data)
-                .then( res => {
-                    this.getTodos();
-                })
-                .catch( error => {
-                    let err = error.response.data.errors.description[0];
-                    alert(err);
-                    location.reload();
-                })
-
+                if (e.description == null)
+                {
+                    alert("The description must be at least 3 characters");
+                    console.log("ERROR");
+                }
+                else
+                {
+                    console.log('continue');
+                    data.append('_method', 'PATCH');
+                    data.append('description', e.description);
+                    console.log(data);
+                    axios.post('/api/todo/' + e.id, data)
+                    .then( res => {
+                        this.getTodos();
+                    })
+                    .catch( error => {
+                        let err = error.response.data.errors.description[0];
+                        alert(err);
+                        location.reload();
+                    })
+                }
             },
             updateTodo(e){
                 this.edit = false;
@@ -279,21 +288,14 @@
                 axios.post('/api/todo', data)
                 .then( (response) => {
                     console.log('Stored in database');
-                    this.status = response.data.msg;
-                    console.log(this.status);
-                    if (response.data.status == 'error'){
-                        alert(this.status);
-                    }
                     this.form.reset();
                     this.getTodos();
                     // location.reload();
                 })
                 .catch( error => {
-                    // console.log(error);
-                    console.log("ERROR\n");
-                    let status = error.response.data.msg;
-                    console.log(status);
-                    // this.displayNotificationError(err);
+                    console.log("ERROR");
+                    let err = error.response.data.errors.title[0];
+                    alert(err);
                 });
             }
         },
