@@ -272,7 +272,7 @@
                 data.append('title', this.form.title);
                 axios.post('/api/todo', data)
                 .then( (response) => {
-                    console.log('Stored in database');
+                    if(response.data.status == 'error'){ alert(response.data.msg) }
                     this.form.reset();
                     this.getTodos();
                 })

@@ -2185,7 +2185,9 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.todos.length);
       data.append('title', this.form.title);
       axios.post('/api/todo', data).then(function (response) {
-        console.log('Stored in database');
+        if (response.data.status == 'error') {
+          alert(response.data.msg);
+        }
 
         _this4.form.reset();
 
