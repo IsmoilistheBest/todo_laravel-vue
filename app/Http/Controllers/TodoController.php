@@ -18,7 +18,6 @@ class TodoController extends Controller
 
         $user_id = auth()->user()->id;
         $todo = Todo::where('user_id', $user_id)->get();
-        // dd($todo);
         return $todo;
     }
 
@@ -97,9 +96,10 @@ class TodoController extends Controller
     public function update(Request $request, $id)
     {
         $todo = Todo::findOrFail($id);
-        // dd($request->description);
+        // checking existing description
         if($request->description)
         {
+            dd("1");
             $this->validate($request, [
                 'description' => 'required|min:3'
             ]);
@@ -107,17 +107,12 @@ class TodoController extends Controller
             $todo->description = $request->description;
             $todo->save();
         }
-        if($request->completed || $request->completed)
-        {
-            $todo->completed = $request->completed;
-            $todo->save();
-        }
+        // checking existing title
         if($request->title)
         {
             $this->validate($request, [
                 'title' => 'required|max:255|min:3'
             ]);
-
             if($todo->title == $request->title)
             {
                 return true;
@@ -142,40 +137,20 @@ class TodoController extends Controller
             }
 
         }
-        // $todo->title = $request->title;
-        // $todo->completed = $request->completed;
-        // if($todo->completed->isEmpty())
-        // {
-        //     dd($request->all());
-        // }
-        // else
-        // {
-        //     dd($request->all());
-        // }
-        // $check_id = auth()->user()->id;
-        // $this->validate($request, [
-        //     'title' => 'required|max:255'
-        // ]);
-        // $check = Todo::where('title', $request->title)
-        //                 ->where('user_id', $check_id)
-        //                 ->count();
-
-        // if(!$check)
-        // {
-        //     $todo->completed = $request->completed;
-        //     $todo->title = $request->title;
-        //     // dd($todo);
-        //     $todo->save();
-        // }
-        // else
-        // {
-        //     // $todo->completed = $request->completed;
-        //     // $todo->save();
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'msg'   => 'Hey dude you have another uncompleted task like this one'
-        //     ]);
-        // }
+        // checking existing completed
+        if($request->completed || !$request->completed)
+        {
+            $todo->completed = $request->completed;
+            $todo->save();
+        }
+        // if when editing user type nothing give the error
+        if($request->title == null)
+        {
+            return response()->json([
+                'status'    => 'error',
+                'msg'       => 'Hey dude you cannot save empty todo'
+            ]);
+        }
     }
 
     /**

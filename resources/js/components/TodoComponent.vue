@@ -9,10 +9,6 @@
                     <button class="btn btn-success" type="submit" id="button-addon2">Add</button>
                 </div>
             </div>
-             <!-- <span class="text-danger pt-3 pb-3" style="font-size:20px;"
-                v-if="form.errors.has('error')" v-text="form.errors.get('error')"
-             >
-             </span> -->
         </form>
 
         <div class="w-100 todo">
@@ -57,14 +53,6 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- <textarea  v-model="form.description"  class="textarea-custom"
-                                            v-if="!todo.description" placeholder="Enter description here..." type="text"
-                                        >
-                                        </textarea>
-                                        <textarea  v-model="todo.description"  class="textarea-custom"
-                                            v-if="todo.description" placeholder="Enter description here..." type="text"
-                                        >
-                                        </textarea> -->
                                         <textarea v-model="todo.description" class="textarea-custom"
                                             placeholder="Enter description here..." type="text"
                                         >
@@ -237,23 +225,22 @@
             },
             updateTodo(e){
                 this.edit = false;
-                // e.completed = +e.completed;
-                // console.log(e.completed);
                 let data = new FormData();
                 data.append('_method', 'PATCH');
                 data.append('title', e.title);
-                // data.append('completed', e.completed);
                 axios.post('/api/todo/' + e.id, data)
                 .then( response => {
-                    this.status = response.data.msg;
-                    console.log(this.status);
+                    let err = response.data.msg;
+                    console.log(err);
                     if (response.data.status == 'error'){
-                        alert(this.status);
+                        alert(err);
                         location.reload();
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
+                    let err = error.response.data.errors.title[0];
+                    alert(err);
+                    location.reload();
                 })
             },
             getTodos(){
@@ -270,13 +257,11 @@
                 if(e.completed == true){
                     console.log(e.completed);
                     data.append('completed', 1);
-                    // data.append('title', e.title);
                     axios.post('/api/todo/' + e.id, data)
                 }
                 if(e.completed == false){
                     console.log(e.completed);
                     data.append('completed', 0);
-                    // data.append('title', e.title);
                     axios.post('/api/todo/' + e.id, data)
                 }
 
@@ -290,7 +275,6 @@
                     console.log('Stored in database');
                     this.form.reset();
                     this.getTodos();
-                    // location.reload();
                 })
                 .catch( error => {
                     console.log("ERROR");

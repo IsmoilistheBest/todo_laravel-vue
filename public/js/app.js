@@ -2075,18 +2075,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2146,32 +2134,29 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     updateTodo: function updateTodo(e) {
-      var _this3 = this;
-
-      this.edit = false; // e.completed = +e.completed;
-      // console.log(e.completed);
-
+      this.edit = false;
       var data = new FormData();
       data.append('_method', 'PATCH');
-      data.append('title', e.title); // data.append('completed', e.completed);
-
+      data.append('title', e.title);
       axios.post('/api/todo/' + e.id, data).then(function (response) {
-        _this3.status = response.data.msg;
-        console.log(_this3.status);
+        var err = response.data.msg;
+        console.log(err);
 
         if (response.data.status == 'error') {
-          alert(_this3.status);
+          alert(err);
           location.reload();
         }
       })["catch"](function (error) {
-        console.log(error);
+        var err = error.response.data.errors.title[0];
+        alert(err);
+        location.reload();
       });
     },
     getTodos: function getTodos() {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.get('/api/todo').then(function (res) {
-        _this4.todos = res.data;
+        _this3.todos = res.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2183,20 +2168,18 @@ __webpack_require__.r(__webpack_exports__);
 
       if (e.completed == true) {
         console.log(e.completed);
-        data.append('completed', 1); // data.append('title', e.title);
-
+        data.append('completed', 1);
         axios.post('/api/todo/' + e.id, data);
       }
 
       if (e.completed == false) {
         console.log(e.completed);
-        data.append('completed', 0); // data.append('title', e.title);
-
+        data.append('completed', 0);
         axios.post('/api/todo/' + e.id, data);
       }
     },
     saveTodo: function saveTodo() {
-      var _this5 = this;
+      var _this4 = this;
 
       var data = new FormData();
       console.log(this.todos.length);
@@ -2204,10 +2187,9 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/todo', data).then(function (response) {
         console.log('Stored in database');
 
-        _this5.form.reset();
+        _this4.form.reset();
 
-        _this5.getTodos(); // location.reload();
-
+        _this4.getTodos();
       })["catch"](function (error) {
         console.log("ERROR");
         var err = error.response.data.errors.title[0];
