@@ -99,7 +99,6 @@ class TodoController extends Controller
         // checking existing description
         if($request->description)
         {
-            dd("1");
             $this->validate($request, [
                 'description' => 'required|min:3'
             ]);
@@ -137,12 +136,6 @@ class TodoController extends Controller
             }
 
         }
-        // checking existing completed
-        if($request->completed || !$request->completed)
-        {
-            $todo->completed = $request->completed;
-            $todo->save();
-        }
         // if when editing user type nothing give the error
         if($request->title == null)
         {
@@ -151,6 +144,13 @@ class TodoController extends Controller
                 'msg'       => 'Hey dude you cannot save empty todo'
             ]);
         }
+        // checking existing completed
+        if($request->completed || !$request->completed)
+        {
+            $todo->completed = $request->completed;
+            $todo->save();
+        }
+
     }
 
     /**
