@@ -2136,11 +2136,12 @@ __webpack_require__.r(__webpack_exports__);
         data.append('description', e.description);
         console.log(data);
         axios.post('/api/todo/' + e.id, data).then(function (res) {
+          location.reload();
+
           _this2.getTodos();
         })["catch"](function (error) {
           var err = error.response.data.errors.description[0];
           alert(err);
-          location.reload();
         });
       }
     },
@@ -38632,10 +38633,7 @@ var render = function() {
                                         "button",
                                         {
                                           staticClass: "btn btn-primary",
-                                          attrs: {
-                                            type: "button",
-                                            "data-dismiss": "modal"
-                                          },
+                                          attrs: { type: "button" },
                                           on: {
                                             click: function($event) {
                                               return _vm.addDescription(todo)

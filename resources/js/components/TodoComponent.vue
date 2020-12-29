@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" data-dismiss="modal" @click="addDescription(todo);"
+                                        <button type="button" @click="addDescription(todo);"
                                             class="btn btn-primary"
                                         >
                                             Save
@@ -226,12 +226,12 @@
                     console.log(data);
                     axios.post('/api/todo/' + e.id, data)
                     .then( res => {
+                        location.reload();
                         this.getTodos();
                     })
                     .catch( error => {
                         let err = error.response.data.errors.description[0];
                         alert(err);
-                        location.reload();
                     })
                 }
             },
